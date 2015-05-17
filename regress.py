@@ -42,15 +42,28 @@ class Regress:
 				book.bar(30)
 			i += 1
 
+class Filer:
+	def __init__(self):
+		pass
+
+	def read(self, regress):
+		pass
+
+	def save(self, regress):
+		pass
+
 class App:
 	def __init__(self):
 		self.regress = Regress()
+		self.filer = Filer()
+		
 		self.commands = OrderedDict()
 		self.commands['q'] = ["Quit this program", lambda: self.quit()]
 		self.commands['h'] = ["Show help", lambda: self.showHelp()]
 		self.commands['l'] = ["List books", lambda: self.listBooks()]
 		self.commands['a'] = ["Add book", lambda: self.addBook()]
 		self.commands['d'] = ["Delete book", lambda: self.deleteBook()]
+		self.commands['c'] = ["Connect to file", lambda: self.connectToFile()]
 
 	def run(self):
 		while True:
@@ -90,6 +103,9 @@ class App:
 		n = int(input("Number: "))
 
 		self.regress.deleteBook(n)
+	
+	def connectToFile(self):
+		self.filer.read()
 
 	def newlines(self, n = 1):
 		print("\n" * abs(n - 1))
