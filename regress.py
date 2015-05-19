@@ -18,7 +18,7 @@ class Book:
 		return self.current_page / self.pages
 
 	def percent(self):
-		return self.ratio() * 100
+		return round(self.ratio() * 100, 2)
 
 	def bar(self, width):
 		filled = int(self.ratio() * width) # floor round
