@@ -99,9 +99,13 @@ class App:
 		self.commands['l'] = ["List books", lambda: self.list_books()]
 		self.commands['a'] = ["Add book", lambda: self.add_book()]
 		self.commands['d'] = ["Delete book", lambda: self.delete_book()]
-		self.commands['c'] = ["Connect to file", lambda: self.connect_to_file()]
+		self.commands['c'] = ["Connect to a file", lambda: self.connect_to_file()]
 
 	def run(self):
+		print("Regress: Readings Progress by Andrew Suzuki")
+		print("Type 'h' to show help")
+		self.connect_to_file(os.path.join(os.path.expanduser("~"), ".regress"))
+
 		while True:
 			self.newlines(1)
 			sys.stdout.write("> ")
@@ -121,7 +125,6 @@ class App:
 		print("Available commands:")
 		for command, lamb in self.commands.items():
 			print("{}: {}".format(command, lamb[0]))
-		
 
 	def list_books(self):
 		self.regress.list_books()
@@ -142,9 +145,13 @@ class App:
 		self.regress.delete_book(n)
 		self.file_sync()
 	
-	def connect_to_file(self):
-		self.filer.set_file("books.txt")
+	def connect_to_file(self, filename = None):
+		if not filename:
+			filename = input("File: ")
+		self.filer.set_file(filename)
 		self.filer.read(self.regress)
+		self.file_sync()
+		print("Connected to file {}".format(filename))
 	
 	def file_sync(self):
 		if self.filer.has_file():
