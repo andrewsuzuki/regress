@@ -41,6 +41,16 @@ class Regress:
 			if book.title == title:
 				return True
 		return False
+
+	def edit_book(self, n, title = None, pages = None, current_page = None):
+		if n > 0 and n <= len(self.books):
+			book = self.books[n-1]
+			if title:
+				book.title = title
+			if pages:
+				book.pages = pages
+			if current_page:
+				book.current_page = current_page
 	
 	def delete_book(self, n):
 		if n > 0 and n <= len(self.books):
@@ -51,7 +61,7 @@ class Regress:
 		for book in self.books:
 			print("{}. {} [Page {} of {} : {}%]".format(i, book.title, book.current_page, book.pages, book.percent()))
 			if with_bar:
-				book.bar(30)
+				book.bar(40)
 			i += 1
 
 class Filer:
@@ -98,6 +108,7 @@ class App:
 		self.commands['h'] = ["Show help", lambda: self.show_help()]
 		self.commands['l'] = ["List books", lambda: self.list_books()]
 		self.commands['a'] = ["Add book", lambda: self.add_book()]
+		self.commands['u'] = ["Update book progress", lambda: self.update_progress()]
 		self.commands['d'] = ["Delete book", lambda: self.delete_book()]
 		self.commands['c'] = ["Connect to a file", lambda: self.connect_to_file()]
 
@@ -137,10 +148,19 @@ class App:
 		self.regress.add_book(title, pages, current_page)
 		self.file_sync()
 
+	def update_progress(self):
+		self.regress.list_books(False)
+
+		n = int(input("Book Number: "))
+		cp = int(input("Current page: "))
+
+		self.regress.edit_book(n, current_page=cp)
+		self.file_sync()
+
 	def delete_book(self):
 		self.regress.list_books(False)
 
-		n = int(input("Number: "))
+		n = int(input("Book Number: "))
 
 		self.regress.delete_book(n)
 		self.file_sync()
